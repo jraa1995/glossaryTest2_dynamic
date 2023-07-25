@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0"/>
+  <title>Glossary</title>
+  <style>
+    /* CSS styles for the header and search bar */
+    header {
+      background-color: white;
+      color: #fff;
+      padding: 2px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    main {
+      padding: 10px;
+      max-height: calc(100vh - 60px);
+      overflow: auto
+    }
+
+    #glossary-list {
+      list-style-type: none;
+      padding: 20px;
+    }
+
+    #glossary {
+      max-height: calc(100vh - 160px);
+      overflow-y: auto;
+    }
+
+    #glossary-list h3 {
+      margin: 10px;
+      font-size: 24px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #glossary-list p {
+      margin: 10px 0 0;
+      font-family: 'Poppins', sans-serif;
+      font-style: italic;
+      font-size: 16px;
+      color: #343a40;
+    }
+
+    #searchInput {
+      padding: 5px;
+      border: 3px solid rgb(29, 81, 135);
+      border-radius: 5px;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /*ul {*/
+    /*  list-style-type: none;*/
+    /*  padding: 0;*/
+    /*}*/
+
+    /*li {*/
+    /*  margin-bottom: 15px;*/
+    /*}*/
+
+    .term {
+      font-weight: bold;
+    }
+
+    .definition {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    /* CSS styles for the footer */
+    footer {
+      background-color: #f4f4f4;
+      padding: 2px;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* CSS styles for the legend */
+    .legend {
+      display: inline-block;
+      width: 26px; /* Set a fixed width for the labels */
+      padding: 3px 8px;
+      margin-left: 5px;
+      text-align: center;
+      background-color: white; /* Light gray background */
+      font-weight: bold;
+      border-radius: 8px;
+      font-size: 12px; /* Standard font size for the labels */
+    }
+
+    .bi {
+      background-color: #012a4a; /* Red */
+      color: #fff;
+    }
+
+    .hr {
+      background-color: #013a63; /* Blue */
+      color: #fff;
+    }
+
+    .hc {
+      background-color: #01497c; /* Green */
+      color: #fff;
+    }
+
+    .ppm {
+      background-color: #014f86; /* Yellow */
+      color: #fff;
+    }
+
+    .undefined {
+      background-color: #354f52; /* Gray */
+      color: #fff;
+    }
+
+    /* CSS styles for the recommendation button */
+    .recommend-button {
+      background-color: #3498db; /* Blue */
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <input type="text" id="searchInput" placeholder="Search...">
+</header>
+
+<main>
+  <section id="glossary">
+    <ul id="glossary-list">
+      <!-- Glossary terms and definitions will be dynamically added here -->
+    </ul>
+  </section>
+</main>
+
+<footer id="footer">
+  <!-- Timestamp for the last update will be displayed here -->
+</footer>
+
+<script>
+  // Glossary data array to store terms and definitions
+  let glossaryData = [
+    {term: "BI", definition: "Business Intelligence", category: "BI"},
+    {term: "HR", definition: "Human Resources", category: "HR"},
+    {term: "HC", definition: "Healthcare", category: "HC"},
+    {term: "PPM", definition: "Project Portfolio Management", category: "PPM"},
+    {term: "API", definition: "Application Programming Interface", category: "BI"},
+    {term: "CSS", definition: "Cascading Style Sheets", category: "HR"},
+    {term: "HTML", definition: "Hypertext Markup Language", category: "HC"},
+    {term: "SQL", definition: "Structured Query Language", category: "PPM"},
+    {term: "JAVA", definition: "Coding Language", category: "BI"},
+    {term: "This is a test", definition: "undefined.", category: "BI"},
+  ];
+
+  // Function to create glossary item with button for "undefined" term
+  function createUndefinedGlossaryItem(term, definition) {
+    const li = document.createElement("li");
+    const termElement = document.createElement("strong");
+    termElement.textContent = term;
+    li.appendChild(termElement);
+
+    const definitionElement = document.createElement("p");
+    definitionElement.textContent = definition;
+    definitionElement.classList.add("definition");
+    li.appendChild(definitionElement);
+
+    const buttonElement = document.createElement("button");
+    buttonElement.textContent = "Recommend A Definition";
+    buttonElement.classList.add("recommend-button");
+    buttonElement.addEventListener("click", openRecommendForm);
+    li.appendChild(buttonElement);
+
+    return li;
+  }
+
+  // Function to create glossary item for other terms
+  function createGlossaryItem(term, definition, category) {
+    const li = document.createElement("li");
+
+    const termHeading = document.createElement("h3");
+    termHeading.textContent = term;
+    li.appendChild(termHeading);
+
+    const definitionElement = document.createElement("p");
+    definitionElement.textContent = definition;
+    definitionElement.classList.add("definition");
+    li.appendChild(definitionElement);
+
+    const categorySpan = document.createElement("span");
+    categorySpan.textContent = category;
+    categorySpan.classList.add("legend", category.toLowerCase());
+    li.appendChild(categorySpan);
+
+    return li;
+  }
+
+  // Function to populate glossary list with all items
+  function populateGlossaryList() {
+    const glossaryList = document.getElementById("glossary-list");
+    glossaryList.innerHTML = ""; // Clear existing content
+
+    glossaryData.forEach(({term, definition, category}) => {
+      if (definition === "undefined.") {
+        // Create a button for "undefined" term
+        const undefinedItem = createUndefinedGlossaryItem(term, definition);
+        glossaryList.appendChild(undefinedItem);
+      } else {
+        // Create glossary item for other terms
+        const glossaryItem = createGlossaryItem(term, definition, category);
+        glossaryList.appendChild(glossaryItem);
+      }
+    });
+  }
+
+  // Function to filter glossary list based on search input
+  function filterGlossary() {
+    const searchInput = document.getElementById("searchInput");
+    const filter = searchInput.value.toUpperCase();
+    const glossaryList = document.getElementById("glossary-list");
+    const glossaryItems = glossaryList.getElementsByTagName("li");
+
+    for (let i = 0; i < glossaryItems.length; i++) {
+      const term = glossaryItems[i].getElementsByTagName("h3")[0].innerText;
+      const definition = glossaryItems[i].getElementsByTagName("p")[0].innerText;
+      if (term.toUpperCase().indexOf(filter) > -1 || definition.toUpperCase().indexOf(filter) > -1) {
+        glossaryItems[i].style.display = "";
+      } else {
+        glossaryItems[i].style.display = "none";
+      }
+    }
+  }
+
+  // Function to update the footer with the static timestamp
+  function updateFooterTimestamp() {
+    const footer = document.getElementById("footer");
+    const timestamp = "Last published: September 2023"; // Replace this with the actual publish date of your site
+    footer.innerHTML = timestamp;
+  }
+
+  // Function to handle new data drop
+  function handleDataDrop(event) {
+    event.preventDefault();
+    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
+    if (data instanceof Array) {
+      glossaryData = glossaryData.concat(data);
+      populateGlossaryList();
+      updateFooterTimestamp();
+    }
+  }
+
+  // Function to allow dropping data on the page
+  function allowDataDrop(event) {
+    event.preventDefault();
+  }
+
+  // Function to open the Google Form for recommending a definition
+  function openRecommendForm() {
+    window.open('https://docs.google.com/forms/d/e/your_form_id/viewform', '_blank'); // Replace the URL with your Google Form link
+  }
+
+  // Function to sort the glossaryData alphabetically
+  function sortGlossaryData() {
+    glossaryData.sort((a, b) => a.term.localeCompare(b.term));
+  }
+
+  // Function to add new data to the glossaryData
+  function addDataToGlossary(newData) {
+    glossaryData = glossaryData.concat(newData);
+    sortGlossaryData();
+    populateGlossaryList();
+    updateFooterTimestamp();
+  }
+
+  // Populate the glossary list and update footer on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    populateGlossaryList();
+    updateFooterTimestamp();
+  });
+
+  // Attach event listener to the search input
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("keyup", filterGlossary);
+
+  // Attach event listeners to allow data drop
+  const glossaryList = document.getElementById("glossary-list");
+  glossaryList.addEventListener("dragover", allowDataDrop);
+  glossaryList.addEventListener("drop", handleDataDrop);
+
+</script>
+</body>
+
+</html>
