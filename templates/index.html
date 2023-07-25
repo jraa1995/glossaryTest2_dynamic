@@ -261,17 +261,24 @@
   // Function to filter glossary list based on search input
   function filterGlossary() {
     const searchInput = document.getElementById("searchInput");
-    const filter = searchInput.value.toUpperCase();
+    const filter = searchInput.value.trim().toUpperCase();
     const glossaryList = document.getElementById("glossary-list");
     const glossaryItems = glossaryList.getElementsByTagName("li");
 
     for (let i = 0; i < glossaryItems.length; i++) {
       const term = glossaryItems[i].querySelector(".term h3").innerText;
-      const definition = glossaryItems[i].getElementsByTagName("p")[0].innerText;
-      if (term.toUpperCase().indexOf(filter) > -1 || definition.toUpperCase().indexOf(filter) > -1) {
-        glossaryItems[i].style.display = "";
+      const definition = glossaryItems[i].querySelector(".definition");
+      const isUndefined = definition && definition.innerText === "undefined.";
+
+      if (isUndefined) {
+        // If the definition is undefined, check if the search input matches the term exactly
+        const isExactMatch = term.toUpperCase() === filter;
+        glossaryItems[i].style.display = isExactMatch ? "" : "none"; // Show only if it's an exact match
       } else {
-        glossaryItems[i].style.display = "none";
+        // For other glossary items with defined definitions, filter based on search input in both term and definition
+        const termMatch = term.toUpperCase().indexOf(filter) > -1;
+        const definitionMatch = definition && definition.innerText.toUpperCase().indexOf(filter) > -1;
+        glossaryItems[i].style.display = termMatch || definitionMatch ? "" : "none";
       }
     }
   }
