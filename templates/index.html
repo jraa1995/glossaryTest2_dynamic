@@ -79,13 +79,18 @@
 
     .term {
       font-weight: bold;
+      flex: 1;
     }
 
-    .definition {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 5px;
-    }
+    /*.term span {*/
+    /*  margin-left: 5px;*/
+    /*}*/
+
+    /*.definition {*/
+    /*  font-size: 12px;*/
+    /*  color: #666;*/
+    /*  margin-bottom: 5px;*/
+    /*}*/
 
     strong {
       font-weight: bold;
@@ -134,17 +139,12 @@
       color: #fff;
     }
 
-    .undefined {
-      background-color: #354f52; /* Gray */
-      color: #fff;
-    }
-
     /* CSS styles for the recommendation button */
-    .recommend-button {
+    .add-definition-button {
       background-color: #3498db; /* Blue */
       color: #fff;
       border: none;
-      padding: 5px 10px;
+      padding: 8px 14px;
       border-radius: 5px;
       cursor: pointer;
     }
@@ -180,47 +180,62 @@
     {term: "HTML", definition: "Hypertext Markup Language", category: "HC"},
     {term: "SQL", definition: "Structured Query Language", category: "PPM"},
     {term: "JAVA", definition: "Coding Language", category: "BI"},
-    {term: "This is a test", definition: "undefined.", category: "BI"},
+    {term: "Python", definition: "undefined.", category: "BI"},
   ];
 
-  // Function to create glossary item with button for "undefined" term
-  function createUndefinedGlossaryItem(term, definition) {
+  // Function to create glossary item for "undefined" term with the "Add Definition" button
+  function createUndefinedGlossaryItem(term, category) {
     const li = document.createElement("li");
-    const termElement = document.createElement("strong");
-    termElement.textContent = term;
-    li.appendChild(termElement);
 
-    const definitionElement = document.createElement("p");
-    definitionElement.textContent = definition;
-    definitionElement.classList.add("definition");
-    li.appendChild(definitionElement);
+    const termDiv = document.createElement("div");
+    termDiv.classList.add("term");
 
-    const buttonElement = document.createElement("button");
-    buttonElement.textContent = "Recommend A Definition";
-    buttonElement.classList.add("recommend-button");
-    buttonElement.addEventListener("click", openRecommendForm);
-    li.appendChild(buttonElement);
+    const termHeading = document.createElement("h3");
+    termHeading.textContent = term;
+    termDiv.appendChild(termHeading);
+
+    const categorySpan = document.createElement("span");
+    categorySpan.textContent = category;
+    categorySpan.classList.add("legend", category.toLowerCase());
+    termDiv.appendChild(categorySpan);
+
+    li.appendChild(termDiv);
+
+    const addButton = document.createElement("button");
+    addButton.textContent = "Recommend A Definition";
+    addButton.classList.add("add-definition-button");
+    addButton.addEventListener("click", () => {
+      // Open Google Form in a new tab for the user to submit the definition
+      window.open("https://docs.google.com/forms/your-google-form-link", "_blank");
+    });
+    li.appendChild(addButton);
 
     return li;
   }
+
 
   // Function to create glossary item for other terms
   function createGlossaryItem(term, definition, category) {
     const li = document.createElement("li");
 
+    const termDiv = document.createElement("div");
+    termDiv.classList.add("term");
+
     const termHeading = document.createElement("h3");
     termHeading.textContent = term;
-    li.appendChild(termHeading);
+    termDiv.appendChild(termHeading);
+
+    const categorySpan = document.createElement("span");
+    categorySpan.textContent = category;
+    categorySpan.classList.add("legend", category.toLowerCase());
+    termDiv.appendChild(categorySpan);
+
+    li.appendChild(termDiv);
 
     const definitionElement = document.createElement("p");
     definitionElement.textContent = definition;
     definitionElement.classList.add("definition");
     li.appendChild(definitionElement);
-
-    const categorySpan = document.createElement("span");
-    categorySpan.textContent = category;
-    categorySpan.classList.add("legend", category.toLowerCase());
-    li.appendChild(categorySpan);
 
     return li;
   }
@@ -233,7 +248,7 @@
     glossaryData.forEach(({term, definition, category}) => {
       if (definition === "undefined.") {
         // Create a button for "undefined" term
-        const undefinedItem = createUndefinedGlossaryItem(term, definition);
+        const undefinedItem = createUndefinedGlossaryItem(term, category);
         glossaryList.appendChild(undefinedItem);
       } else {
         // Create glossary item for other terms
@@ -251,7 +266,7 @@
     const glossaryItems = glossaryList.getElementsByTagName("li");
 
     for (let i = 0; i < glossaryItems.length; i++) {
-      const term = glossaryItems[i].getElementsByTagName("h3")[0].innerText;
+      const term = glossaryItems[i].querySelector(".term h3").innerText;
       const definition = glossaryItems[i].getElementsByTagName("p")[0].innerText;
       if (term.toUpperCase().indexOf(filter) > -1 || definition.toUpperCase().indexOf(filter) > -1) {
         glossaryItems[i].style.display = "";
@@ -264,7 +279,7 @@
   // Function to update the footer with the static timestamp
   function updateFooterTimestamp() {
     const footer = document.getElementById("footer");
-    const timestamp = "Last published: September 2023"; // Replace this with the actual publish date of your site
+    const timestamp = "Last published: July 2023"; // Replace this with the actual publish date of your site
     footer.innerHTML = timestamp;
   }
 
