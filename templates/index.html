@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossary</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
@@ -15,7 +16,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0"/>
-  <title>Glossary</title>
   <style>
     /* CSS styles for the header and search bar */
     header {
@@ -29,17 +29,20 @@
     }
 
     main {
+      display: block;
       padding: 10px;
       max-height: calc(100vh - 60px);
-      overflow: auto
+      overflow: auto;
     }
 
     #glossary-list {
       list-style-type: none;
       padding: 20px;
+      flex: 1;
     }
 
     #glossary {
+      padding: 10 p;
       max-height: calc(100vh - 160px);
       overflow-y: auto;
     }
@@ -68,32 +71,63 @@
       display: block;
     }
 
-    /*ul {*/
-    /*  list-style-type: none;*/
-    /*  padding: 0;*/
-    /*}*/
-
-    /*li {*/
-    /*  margin-bottom: 15px;*/
-    /*}*/
-
-    .term {
-      font-weight: bold;
-      flex: 1;
+    /* CSS styles for glossary items */
+    .glossary-item {
+      display: flex;
+      flex-direction: column; /* Display the term and description in a column */
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 20px;
     }
 
-    /*.term span {*/
-    /*  margin-left: 5px;*/
-    /*}*/
+    .term {
+      display: flex;
+      align-items: center;
+    }
 
-    /*.definition {*/
-    /*  font-size: 12px;*/
-    /*  color: #666;*/
-    /*  margin-bottom: 5px;*/
-    /*}*/
-
-    strong {
+    .legend {
+      display: inline-block;
+      width: 26px;
+      padding: 3px 8px;
+      margin-left: 5px;
+      text-align: center;
+      background-color: white;
       font-weight: bold;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    /* Legend colors for categories */
+    .bi {
+      background-color: #012a4a;
+      color: #fff;
+    }
+
+    .hr {
+      background-color: #013a63;
+      color: #fff;
+    }
+
+    .hc {
+      background-color: #01497c;
+      color: #fff;
+    }
+
+    .ppm {
+      background-color: #014f86;
+      color: #fff;
+    }
+
+    /* CSS styles for the recommendation button */
+    .add-definition-button {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     /* CSS styles for the footer */
@@ -106,47 +140,9 @@
       width: 100%;
     }
 
-    /* CSS styles for the legend */
-    .legend {
-      display: inline-block;
-      width: 26px; /* Set a fixed width for the labels */
-      padding: 3px 8px;
-      margin-left: 5px;
-      text-align: center;
-      background-color: white; /* Light gray background */
-      font-weight: bold;
-      border-radius: 8px;
-      font-size: 12px; /* Standard font size for the labels */
-    }
-
-    .bi {
-      background-color: #012a4a; /* Red */
-      color: #fff;
-    }
-
-    .hr {
-      background-color: #013a63; /* Blue */
-      color: #fff;
-    }
-
-    .hc {
-      background-color: #01497c; /* Green */
-      color: #fff;
-    }
-
-    .ppm {
-      background-color: #014f86; /* Yellow */
-      color: #fff;
-    }
-
-    /* CSS styles for the recommendation button */
-    .add-definition-button {
-      background-color: #3498db; /* Blue */
-      color: #fff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
     }
   </style>
 </head>
@@ -180,12 +176,13 @@
     {term: "HTML", definition: "Hypertext Markup Language", category: "HC"},
     {term: "SQL", definition: "Structured Query Language", category: "PPM"},
     {term: "JAVA", definition: "Coding Language", category: "BI"},
-    {term: "Python", definition: "undefined.", category: "BI"},
+    {term: "Python", definition: "undefined.", category: null},
   ];
 
   // Function to create glossary item for "undefined" term with the "Add Definition" button
   function createUndefinedGlossaryItem(term, category) {
     const li = document.createElement("li");
+    li.classList.add("glossary-item");
 
     const termDiv = document.createElement("div");
     termDiv.classList.add("term");
@@ -194,12 +191,25 @@
     termHeading.textContent = term;
     termDiv.appendChild(termHeading);
 
-    const categorySpan = document.createElement("span");
-    categorySpan.textContent = category;
-    categorySpan.classList.add("legend", category.toLowerCase());
-    termDiv.appendChild(categorySpan);
+    if (category) {
+      const categorySpan = document.createElement("span");
+      categorySpan.textContent = category;
+      categorySpan.classList.add("legend", category.toLowerCase());
+      termDiv.appendChild(categorySpan);
+    }
 
     li.appendChild(termDiv);
+
+    const tagsDiv = document.createElement("div");
+    tagsDiv.classList.add("tags");
+
+    li.appendChild(tagsDiv);
+
+    // Create a paragraph element for the description
+    const descriptionElement = document.createElement("p");
+    descriptionElement.textContent = ""; // Replace this with the actual description for undefined terms
+    descriptionElement.classList.add("description");
+    li.appendChild(descriptionElement);
 
     const addButton = document.createElement("button");
     addButton.textContent = "Recommend A Definition";
@@ -213,10 +223,10 @@
     return li;
   }
 
-
   // Function to create glossary item for other terms
   function createGlossaryItem(term, definition, category) {
     const li = document.createElement("li");
+    li.classList.add("glossary-item");
 
     const termDiv = document.createElement("div");
     termDiv.classList.add("term");
@@ -225,17 +235,25 @@
     termHeading.textContent = term;
     termDiv.appendChild(termHeading);
 
-    const categorySpan = document.createElement("span");
-    categorySpan.textContent = category;
-    categorySpan.classList.add("legend", category.toLowerCase());
-    termDiv.appendChild(categorySpan);
+    if (category) {
+      const categorySpan = document.createElement("span");
+      categorySpan.textContent = category;
+      categorySpan.classList.add("legend", category.toLowerCase());
+      termDiv.appendChild(categorySpan);
+    }
 
     li.appendChild(termDiv);
 
-    const definitionElement = document.createElement("p");
-    definitionElement.textContent = definition;
-    definitionElement.classList.add("definition");
-    li.appendChild(definitionElement);
+    const tagsDiv = document.createElement("div");
+    tagsDiv.classList.add("tags");
+
+    li.appendChild(tagsDiv);
+
+    // Create a paragraph element for the description
+    const descriptionElement = document.createElement("p");
+    descriptionElement.textContent = "Description: " + definition;
+    descriptionElement.classList.add("description");
+    li.appendChild(descriptionElement);
 
     return li;
   }
@@ -267,18 +285,18 @@
 
     for (let i = 0; i < glossaryItems.length; i++) {
       const term = glossaryItems[i].querySelector(".term h3").innerText;
-      const definition = glossaryItems[i].querySelector(".definition");
-      const isUndefined = definition && definition.innerText === "undefined.";
+      const definition = glossaryItems[i].querySelector(".description");
+      const isUndefined = definition && definition.innerText === "Description: Add your description here";
 
       if (isUndefined) {
-        // If the definition is undefined, check if the search input matches the term exactly
+        // If the description is the placeholder, check if the search input matches the term exactly
         const isExactMatch = term.toUpperCase() === filter;
         glossaryItems[i].style.display = isExactMatch ? "" : "none"; // Show only if it's an exact match
       } else {
-        // For other glossary items with defined definitions, filter based on search input in both term and definition
+        // For other glossary items with defined descriptions, filter based on search input in both term and description
         const termMatch = term.toUpperCase().indexOf(filter) > -1;
-        const definitionMatch = definition && definition.innerText.toUpperCase().indexOf(filter) > -1;
-        glossaryItems[i].style.display = termMatch || definitionMatch ? "" : "none";
+        const descriptionMatch = definition && definition.innerText.toUpperCase().indexOf(filter) > -1;
+        glossaryItems[i].style.display = termMatch || descriptionMatch ? "" : "none";
       }
     }
   }
@@ -286,43 +304,11 @@
   // Function to update the footer with the static timestamp
   function updateFooterTimestamp() {
     const footer = document.getElementById("footer");
-    const timestamp = "Last published: July 2023"; // Replace this with the actual publish date of your site
+    const timestamp = "Last published: 07/25/2023 1:12:04 EST"; // Replace this with the actual publish date of your site
     footer.innerHTML = timestamp;
   }
 
-  // Function to handle new data drop
-  function handleDataDrop(event) {
-    event.preventDefault();
-    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-    if (data instanceof Array) {
-      glossaryData = glossaryData.concat(data);
-      populateGlossaryList();
-      updateFooterTimestamp();
-    }
-  }
-
-  // Function to allow dropping data on the page
-  function allowDataDrop(event) {
-    event.preventDefault();
-  }
-
-  // Function to open the Google Form for recommending a definition
-  function openRecommendForm() {
-    window.open('https://docs.google.com/forms/d/e/your_form_id/viewform', '_blank'); // Replace the URL with your Google Form link
-  }
-
-  // Function to sort the glossaryData alphabetically
-  function sortGlossaryData() {
-    glossaryData.sort((a, b) => a.term.localeCompare(b.term));
-  }
-
-  // Function to add new data to the glossaryData
-  function addDataToGlossary(newData) {
-    glossaryData = glossaryData.concat(newData);
-    sortGlossaryData();
-    populateGlossaryList();
-    updateFooterTimestamp();
-  }
+  // ... Your existing JavaScript code ...
 
   // Populate the glossary list and update footer on page load
   document.addEventListener("DOMContentLoaded", () => {
@@ -338,7 +324,6 @@
   const glossaryList = document.getElementById("glossary-list");
   glossaryList.addEventListener("dragover", allowDataDrop);
   glossaryList.addEventListener("drop", handleDataDrop);
-
 </script>
 </body>
 
